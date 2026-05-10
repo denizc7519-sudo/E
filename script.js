@@ -66,10 +66,23 @@ let stats = { correct: 0, wrong: 0, streak: 0, maxStreak: 0, totalDamage: 0, lev
 let botTimeout, selectedMode, currentQuestions, currentQuestion;
 let isCooldown = false;
 
+// Müziği Garanti Altına Alan Kısım
 function playSFX(id) {
     const s = document.getElementById(id);
     if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
 }
+
+function playLobbyMusic() {
+    const lobby = document.getElementById('bgm-lobby');
+    if (lobby && lobby.paused && !gameStarted) {
+        lobby.play().catch(e => console.log("Müzik için etkileşim bekleniyor..."));
+    }
+}
+
+// Sayfa açıldığında ilk tıklamayla müziği başlat
+document.addEventListener('click', playLobbyMusic, { once: true });
+// Sayfa yüklendiğinde çalmayı dene (bazı tarayıcılar izin verebilir)
+window.onload = playLobbyMusic;
 
 function startGame(mode) {
     playSFX('sfx-click');
@@ -86,8 +99,13 @@ function startGame(mode) {
         document.getElementById('level-display').innerText = "SEVİYE 1";
     }
 
-    document.getElementById('bgm-lobby').pause();
-    document.getElementById('bgm-game').play().catch(()=>{});
+    const lobby = document.getElementById('bgm-lobby');
+    lobby.pause();
+    lobby.currentTime = 0;
+    
+    const gameMusic = document.getElementById('bgm-game');
+    gameMusic.currentTime = 0;
+    gameMusic.play().catch(()=>{});
     
     updateUI();
     loadQuestion(); 
@@ -142,7 +160,7 @@ function checkAnswer(choice, btn) {
         let crit = (Date.now() - currentQuestion.ts < 2500);
         
         if (crit) {
-            showCrit(); // Plays critical-hit.mp3
+            showCrit(); 
         } else {
             playSFX('sfx-correct');
         }
@@ -166,7 +184,7 @@ function checkAnswer(choice, btn) {
         if (playerHP > 0 && botHP > 0) startBotAI();
     } else {
         playSFX('sfx-wrong');
-        btn.classList.add('disabled-btn'); // Turns the button gray and unclickable
+        btn.classList.add('disabled-btn'); 
         
         stats.wrong++; stats.streak = 0;
         playerHP -= 15; stats.totalDamage += 15;
@@ -202,14 +220,12 @@ function showCrit() {
 function endGame(win) {
     gameStarted = false; clearTimeout(botTimeout);
     
-    // Müziği durdur
     const bgm = document.getElementById('bgm-game');
     bgm.pause();
     bgm.currentTime = 0;
     
     const isWin = win || (selectedMode === 'survival' && stats.correct >= 10);
     
-    // Oyun sonu sesini çal
     if (isWin) {
         playSFX('sfx-win');
     } else {
