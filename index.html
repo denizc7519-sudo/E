@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matematik Düellosu: Deniz Çaycı Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="damage-overlay" class="overlay red-flash"></div>
+    <div id="correct-overlay" class="overlay green-flash"></div>
+
+    <div id="shake-container">
+        <div class="background-chalkboard"></div>
+        
+        <div class="ui-wrapper">
+            <!-- START SCREEN -->
+            <div id="start-screen" class="mc-modal screen">
+                <h1 class="mc-title">MATEMATİK DÜELLOSU</h1>
+                <div class="menu-stack">
+                    <p>MOD SEÇİN</p>
+                    <div class="diff-grid">
+                        <button class="mc-btn" onclick="startGame('easy')">KOLAY</button>
+                        <button class="mc-btn" onclick="startGame('normal')">NORMAL</button>
+                        <button class="mc-btn" onclick="startGame('hard')">ZOR</button>
+                        <button class="mc-btn extreme-glow" onclick="startGame('extreme')">EKSTREM</button>
+                    </div>
+                    <button class="mc-btn survival-glow" onclick="startGame('survival')">SONSUZ (SURVIVAL)</button>
+                </div>
+                <p style="margin-top: 25px; font-size: 0.9rem; color: #ccc;">Geliştirici: Deniz Çaycı</p>
+            </div>
+
+            <!-- GAME SCREEN -->
+            <div id="game-screen" class="mc-modal screen hidden">
+                <div class="stats-header">
+                    <div class="hp-group left-align">
+                        <span>OYUNCU</span>
+                        <div class="hp-bar"><div id="player-hp" class="hp-fill player"></div></div>
+                    </div>
+                    <div id="level-container" class="level-box hidden">
+                        <span id="level-display">SEVİYE 1</span>
+                    </div>
+                    <div class="hp-group right-align" style="position: relative;">
+                        <span>MAT-BOT</span>
+                        <div class="hp-bar"><div id="bot-hp" class="hp-fill bot"></div></div>
+                        <img src="explosion.png" id="crit-notification" class="crit-explosion hidden">
+                    </div>
+                </div>
+                <div class="streak-badge">SERİ: <span id="streak-count">0</span> 🔥</div>
+                <div class="battle-frame">
+                    <h2 id="question-text" class="math-text normal-font">Yükleniyor...</h2>
+                    <div id="options-grid" class="options-grid"></div>
+                </div>
+            </div>
+
+            <!-- END SCREEN -->
+            <div id="end-screen" class="mc-modal screen result-screen hidden">
+                <h1 class="mc-title-green" id="end-title">TEBRİKLER!</h1>
+                
+                <!-- LGS Puanı ve Yanında Kupalar -->
+                <div class="score-wrapper">
+                    <img src="trophy.png" id="end-trophy-left" class="trophy trophy-left float-anim hidden">
+                    <div class="score-container">
+                        <p>LGS TAHMİNİ PUANIN:</p>
+                        <h2 class="gold-text" id="stat-lgs-score">0</h2>
+                    </div>
+                    <img src="trophy.png" id="end-trophy-right" class="trophy trophy-right float-anim hidden">
+                </div>
+
+                <div class="stats-inner-box wide-grid">
+                    <div class="stat-item">
+                        <span class="label">TAM İSABET</span>
+                        <span class="value green-text" id="stat-accuracy">0/0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">HASAR ALINDI</span>
+                        <span class="value red-text" id="stat-damage">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">EN UZUN SERİ</span>
+                        <span class="value" id="stat-streak">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">TOPLAM SORU</span>
+                        <span class="value" id="stat-total-q">0</span>
+                    </div>
+                </div>
+
+                <div class="button-center">
+                    <button class="mc-btn restart-btn" onclick="location.reload()">TEKRAR DENE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO ASSETS -->
+    <audio id="bgm-lobby" src="lobby.mp3" loop autoplay></audio>
+    <audio id="bgm-game" src="game.mp3" loop></audio>
+    <audio id="sfx-correct" src="correct.mp3"></audio>
+    <audio id="sfx-wrong" src="wrong.mp3"></audio>
+    <audio id="sfx-click" src="click.mp3"></audio>
+    <audio id="sfx-crit" src="critical-hit.mp3"></audio>
+    <audio id="sfx-win" src="win.mp3"></audio>
+    <audio id="sfx-lose" src="lose.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
